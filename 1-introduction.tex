@@ -6,6 +6,7 @@
     \caption{The static verification ecosystem based on SMT solvers and e-graphs.}
 \end{figure}
 
+\JC{Cite?}
 \textit{Software verification} is the discipline of assuring that a software system
 conforms to a given specification. It is a traditional area of research in 
 computer science, drawing on both \textit{software engineering} and 
@@ -21,19 +22,31 @@ complex systems, static verification often relies on
 the analysis tractable. In that sense, it is \textit{static} because the 
 analysis is performed without executing the original system.
 
+\JC{Cite Decision Procedures by Kroening and Strichman II Edition}
 In this proposal, we focus on \textit{static verification} and specifically on
-\textit{theorem proving} for software verification.
-
-
-\paragraph{What is verification?} The process of guaranteeing that a system
-satisfies a specification\dots
+\textit{theorem proving} for software verification. A theorem prover is a tool
+that checks the validity of \textit{formulas} in some \textit{logic}, 
+e.g., whether a \textit{goal} property (i.e., some behavior) can be derived from
+a set of known facts (i.e., the system). 
+To do so, theorem provers can apply a mix of two approaches: the 
+\textit{model-theoretic} approach is based on cleverly enumerating all possible
+models of the facts and checking if the goal holds, i.e., searching for
+the first system configuration that invalidates the expected behavior; the 
+\textit{proof-theoretic} approach is based on deriving the goal from the 
+known facts using the set of valid inference rules of the logic, i.e., 
+transforming the system into another equivalent system for which the property 
+trivially holds. 
 
 \paragraph{Why is it significant?} Soundness guarantees compared to testing,
 formal methods for AI, \dots
 
-\paragraph{What are the verification tools?} SMT solvers, saturation-based, eqsat-based, Lean, Coq, Isabelle, Agda, \dots
-
 \paragraph{What are the challenges?} Scalability, usability, \dots
+Theorem provers are also classified based on the level of automation:
+\textit{automated theorem provers} (ATPs) are fully automatic, while
+\textit{interactive theorem provers} (ITPs) require human guidance to complete 
+the proof. 
+
+\paragraph{What are the verification tools?} SMT solvers, saturation-based, eqsat-based, Lean, Coq, Isabelle, Agda, \dots
 
 \paragraph{What is the contribution of this PhD proposal?} Optimizing the
 verification ecosystem based on e-graphs \dots
