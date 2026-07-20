@@ -1,3 +1,45 @@
 \paragraph{Scope}
 
 \paragraph{Plan}
+
+\begin{figure}[t]
+\centering
+\definecolor{darkgreen}{HTML}{2A5E32}
+\definecolor{midgreen}{HTML}{377E39}
+
+\begin{tikzpicture}[
+  yearline/.style={gray, opacity=0.35, thin, dashed},
+  chevron/.style={
+    signal, signal to=east, signal from=west, signal pointer angle=110,
+    draw=black, line width=0.6pt, inner sep=6pt, text=white,
+    align=center, minimum height=1.3cm
+  },
+  outer/.style={chevron, fill=darkgreen, minimum height=3.1cm},
+  inner/.style={chevron, fill=midgreen, minimum width=3.2cm},
+  label/.style={font=\bfseries}
+]
+
+% ---- Time Axis ----
+\foreach \x/\lab in {-3.25/0y, -0.01/1y, 3.23/2y, 6.47/3y, 9.71/4y, 12.95/5y}{
+  \draw[yearline] (\x,-2.3) -- (\x,2.0);
+  \node[gray, font=\small\bfseries] at (\x,2.25) {\lab};
+}
+
+% ---- Course Phase ----
+\node[outer, minimum width=0.38\linewidth] (g1) at (0,0) {};
+\node[inner, text width=0.15\linewidth] at ($(g1.center)+(0,0.75)$) {Disequality\\Reasoning};
+\node[inner, text width=0.15\linewidth] at ($(g1.center)+(0,-0.75)$) {Conditional\\Reasoning};
+\node[label] (g1label) at ($(g1.center)+(0,-2.8)$) {Course Phase};
+
+% ---- Dissertation Phase ----
+\node[outer, minimum width=0.57\linewidth] (g2) at (8.1,0) {};
+\node[inner, text width=0.15\linewidth] at ($(g2.center)+(-1.6,0.75)$) {Lazy\\Reasoning};
+\node[inner, text width=0.15\linewidth] at ($(g2.center)+(-1.6,-0.75)$) {Parallel\\Reasoning};
+\node[chevron, fill=midgreen, text width=0.10\linewidth, minimum height=2.8cm]
+     (tp) at ($(g2.center)+(2.3,0)$) {};
+\node[align=center, text=white] at ([xshift=2mm]tp.center) {Smart\\E-Graphs};
+\node[label] (g2label) at ($(g2.center)+(0,-2.8)$) {Dissertation Phase};
+\end{tikzpicture}
+\caption{High-level plan for the Ph.D. proposal.}
+\label{fig:plan}
+\end{figure}
