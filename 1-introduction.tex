@@ -1,54 +1,129 @@
 
+% CONTEXT: What is software verification?
+\textit{Software verification} is the discipline of assuring that a software system
+conforms to a given specification. It is a traditional area of research in 
+computer science, drawing on both \textit{software engineering} and 
+\textit{programming languages}.
+\textit{Dynamic verification}, such as \textit{testing} \cite{ammann2016testing} and 
+\textit{fuzzing} \cite{miller1990fuzzing}, 
+executes the system under selected configurations to discover deviations from 
+the specification, i.e., \textit{bugs}. 
+Conversely, \textit{static verification}, such as \textit{model checking} \cite{clarke2018modelchecking}
+and \textit{theorem proving} \cite{harrison2009theoremproving}, analyzes all possible behaviors of the
+system
+to guarantee that it always satisfies the specification. Since this is rarely
+feasible for complex systems, static verification often relies on
+\textit{abstractions} that approximate the system and the specification to make
+the analysis tractable. In that sense, it is \textit{static} because the 
+analysis is performed without executing the original system.
+
+% FOCUS: What is theorem proving?
+In this proposal, we focus on \textit{static verification} and specifically on
+\textit{theorem proving} for software verification. A theorem prover is a tool
+that checks the validity of \textit{formulas} in some \textit{logic}~\cite{kroening2016decision}, 
+e.g., whether a \textit{goal} property (i.e., some behavior) is implied from
+a set of known facts (i.e., the system). 
+To do so, theorem provers can apply a mix of two approaches: the 
+\textit{model-theoretic} approach cleverly enumerates all possible
+models of the facts and checks if the goal holds, i.e., searches for
+the first system configuration that invalidates the expected behavior; the 
+\textit{proof-theoretic} approach derives the goal from the 
+known facts using the set of valid inference rules of the logic, i.e., 
+transforms the system into a logically equivalent system for which the property 
+trivially holds. 
+
+% SIGNIFICANCE: Why is theorem proving important?
+The guarantees provided by static verification are essential to determine which
+conditions are \textit{sufficient} or \textit{necessary} for a system to behave 
+as expected. 
+For example, a \textit{type system} like Rust's enforces 
+\textit{ownership semantics} in a program, which is a sufficient condition for
+memory safety and data race freedom \cite{jung2018rustbelt}. 
+More expressive analyzers, such as the Viper \textit{verification language}~\cite{mueller2016viper} can
+check that given \textit{preconditions} are sufficient to guarantee arbitrary
+\textit{postconditions} of a program, based on \textit{separation logic}~\cite{reynolds2002separation} and
+\textit{SMT solvers}~\cite{demoura2008z3}. 
+At the boundary of expressiveness, \textit{proof assistants} like Lean can check
+the proofs of arbitrary properties of the system using \textit{dependent type theory}
+\cite{demoura2021lean4}, but they enforce \textit{totality} of definitions, which is a
+necessary condition for the soundness of the proofs.
+Together, these tools provide us with a better understanding of the system
+before it is deployed in the real world, preventing costly failures \cite{lions1996ariane}. 
+Their relevance is even more pronounced with the surge in software produced by
+\textit{generative artificial intelligence}, which has fueled a push to certify
+machine-generated artifacts \cite{sun2024clover,yang2023leandojo,song2025leancopilot,thakur2025clever,cook2025autoreasoning,poesia2022synchromesh,nagy2026chopchop,mundler2025typeconstrained}.
+
+% LIMITATIONS: What are the challenges in theorem proving?
+Theorem proving faces two fundamental challenges: \textit{scalability} and
+\textit{usability}. Scalability concerns the computational cost of the analysis:
+the space of models to enumerate or proofs to derive grows rapidly, and is often
+undecidable, so a prover may fail to establish a goal within any practical time
+and memory budget. Usability concerns the human cost: expressing a system and
+its specification in a formal logic, and steering the prover toward a proof,
+demands considerable expertise and manual effort. These two challenges are in
+tension, and theorem provers are commonly classified by how they trade one
+against the other, according to their level of automation. \textit{Automated
+theorem provers} (ATPs) require no human guidance and thus minimize the
+usability burden, but their automation reaches only a limited class of goals
+before the search becomes intractable; their central challenge is therefore
+scalability. \textit{Interactive theorem provers} (ITPs) admit human guidance
+and can, in principle, prove arbitrary properties, so expressiveness is not the
+wall; their central challenge is instead the human effort this guidance
+requires, i.e., usability.
+
+% INSIGHT: Most verification tools eventually rely on e-graphs. ATPs use it for
+% equational reasoning and ITPs use it for automated proof search.
+Underlying much of this ecosystem is a single data structure: the
+\textit{e-graph}, which compactly represents a congruence relation over terms
+and originates in the congruence-closure decision procedures of Nelson and
+Oppen~\cite{nelson1980congruence}. Both families of provers reduce core
+reasoning tasks to operations on e-graphs (Figure~\ref{fig:pyramid}), though to
+different ends. ATPs use
+them for \textit{equational reasoning}: SMT solvers rely on congruence closure
+and e-matching to combine theories and instantiate quantifiers
+\cite{demoura2007ematching, demoura2008z3}, while \textit{equality-saturation}
+engines make the e-graph the central representation for applying rewrites
+without committing to an order \cite{tate2009eqsat, willsey2021egg}. ITPs use
+them for \textit{automated proof search}: tactics such as the \texttt{grind}
+tactic in Lean discharge goals by saturating an e-graph with the available facts
+and their congruence consequences~\cite{leangrind}. Because the same
+structure sits beneath so many otherwise disconnected tools, an improvement to
+the e-graph itself can propagate as an optimization across the whole ecosystem.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/pyramid.pdf}
     \caption{The static verification ecosystem based on SMT solvers and e-graphs.}
+    \label{fig:pyramid}
 \end{figure}
 
-\JC{Cite?}
-\textit{Software verification} is the discipline of assuring that a software system
-conforms to a given specification. It is a traditional area of research in 
-computer science, drawing on both \textit{software engineering} and 
-\textit{programming languages}.
-\textit{Dynamic verification}, such as \textit{testing} and \textit{fuzzing}, 
-executes the system under selected configurations to discover deviations from 
-the specification, i.e., \textit{bugs}. 
-Instead, \textit{static verification}, such as \textit{model checking} and
-\textit{theorem proving}, analyzes all possible system's behaviors to guarantee 
-that it always satisfies the specification. Since this is rarely feasible for 
-complex systems, static verification often relies on
-\textit{abstractions} that approximate the system and the specification to make
-the analysis tractable. In that sense, it is \textit{static} because the 
-analysis is performed without executing the original system.
+% CONTRIBUTION: Extend e-graphs to semantic-reasoning to enable optimizations
+% across the entire theorem proving ecosystem.
+At its core, this proposal extends the e-graph beyond the equalities it was
+designed to represent, enriching it into a structure that reasons about a 
+broader class of relationships between terms. We start from one of the most 
+common patterns in theorem proving, \textit{proof by cases}, and show how it can
+be made first-class in the e-graph. A proof by cases splits the goal into multiple subgoals, proven under mutually exclusive 
+assumptions. Two ingredients are essential to this technique:
+\textit{disequality reasoning}, which tracks disequalities arising from mutually
+exclusive cases, and \textit{conditional reasoning}, which tracks which facts 
+hold under which assumptions. With disequality reasoning, contradictions can be detected early, which can be exploited to prune the search space or in proof by contradiction. With conditional reasoning, the entailment of conditions can be mapped to a dependency relation among e-graphs, which can be exploited for
+\textit{lazy reasoning}, deferring computation until a query demands it, and for
+\textit{parallel reasoning}, scheduling proof exploration across independent
+tasks.
 
-\JC{Cite Decision Procedures by Kroening and Strichman II Edition}
-In this proposal, we focus on \textit{static verification} and specifically on
-\textit{theorem proving} for software verification. A theorem prover is a tool
-that checks the validity of \textit{formulas} in some \textit{logic}, 
-e.g., whether a \textit{goal} property (i.e., some behavior) can be derived from
-a set of known facts (i.e., the system). 
-To do so, theorem provers can apply a mix of two approaches: the 
-\textit{model-theoretic} approach is based on cleverly enumerating all possible
-models of the facts and checking if the goal holds, i.e., searching for
-the first system configuration that invalidates the expected behavior; the 
-\textit{proof-theoretic} approach is based on deriving the goal from the 
-known facts using the set of valid inference rules of the logic, i.e., 
-transforming the system into another equivalent system for which the property 
-trivially holds. 
-
-\paragraph{Why is it significant?} Soundness guarantees compared to testing,
-formal methods for AI, \dots
-
-\paragraph{What are the challenges?} Scalability, usability, \dots
-Theorem provers are also classified based on the level of automation:
-\textit{automated theorem provers} (ATPs) are fully automatic, while
-\textit{interactive theorem provers} (ITPs) require human guidance to complete 
-the proof. 
-
-\paragraph{What are the verification tools?} SMT solvers, saturation-based, eqsat-based, Lean, Coq, Isabelle, Agda, \dots
-
-\paragraph{What is the contribution of this PhD proposal?} Optimizing the
-verification ecosystem based on e-graphs \dots
-
-\paragraph{What is the impact?} Proving more and faster \dots
+% IMPACT: An optimized foundation for theorem proving enables more and faster
+% automated proofs, which in turn increase both scalability for ATPs and 
+% usability of ITPs.
+Because these extensions live in the e-graph, the shared substrate of the
+ecosystem, their benefits are not confined to a single tool: any prover built on
+e-graphs stands to prove more, and to prove it faster. These gains fall along the
+two axes that divide the field. For ATPs, detecting contradictions
+early, deferring computation until it is needed, and exploring independent
+branches in parallel all attack the combinatorial blow-up of the search,
+helping with the scalability that most limits them. For ITPs,
+absorbing disequalities and conditional facts into the e-graph lets automation
+discharge goals that would otherwise fall to the user, helping with the usability
+that most limits them. Because the improvement is made once, at the foundation,
+and inherited by every tool above it, its impact compounds as the demand for
+verified software continues to grow.
