@@ -19,16 +19,25 @@ inside one of the afore-mentioned provers, where case-splitting arise in proofs
 by cases, or SMT solver, where case-splitting paradigms such as 
 cube-and-conquer~\cite{heule2011cube} are a natural workload.
 
-\subsection{Parallel Reasoning} 
+\subsection{Parallel Reasoning}
 
-\paragraph{Lattice of E-Graphs} how to define dependencies between proof
-exploration tasks in terms of e-graphs\dots
-
-\paragraph{Static Scheduling} how to schedule proof exploration tasks in 
-parallel on a complete lattice\dots
-
-\paragraph{Dynamic Scheduling} how to schedule proof exploration tasks in
-parallel on a partial lattice (some information are missing)\dots
+Parallel reasoning treats the lattice of equivalence relations as a dependency
+graph of tasks, each exploring one relation modulo its dependencies, and asks 
+how to schedule that graph across many workers. Three difficulties shape the 
+problem.
+The tasks are individually undecidable, since saturating a context may never
+terminate, so execution must be incremental, each task propagating partial
+results for downstream tasks to build on rather than running to completion. The
+lattice itself may be unbounded, as the conditions worth exploring are
+open-ended, so scheduling must interleave advancing the known relations with
+discovering new contexts, each discovery triggering a further scheduling round.
+And because
+the tasks share one underlying structure, a good schedule must keep
+synchronization and contention low. Addressing these statically where the
+lattice is known, and dynamically where it is not, is the crux of this
+direction. We can evaluate a schedule by its speed-up and scalability as the
+number of threads grows, relative to sequential exploration and to an ideal
+parallelization of the same dependency graph.
 
 \subsection{Smart E-Graphs}
 
