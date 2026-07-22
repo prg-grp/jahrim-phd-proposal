@@ -29,4 +29,24 @@ the Propel automated theorem prover~\cite{zakhour2024algebraic, zakhour2023crdt}
 standard benchmarks, where direct support for disequalities outperformed 
 embedding-based encodings, in line with the analytical result.
 
-\subsection{Conditional Reasoning} authored \dots
+\subsection{Conditional Reasoning}
+Second, I developed \textit{versioned e-graphs}, which extend e-graphs to
+represent equalities that hold only conditionally~\cite{cesario2026versioned}.
+Under proof by cases, and branching settings more generally, each branch assumes
+a different set of equalities on top of a shared base. A traditional e-graph
+encodes a single global equality relation, so these contextual equalities are
+handled by keeping one e-graph per branch, which replicates the equalities the
+branches share. A versioned e-graph instead encodes many equivalence sets, one
+per \textit{version}, in a single structure that maximizes sharing across them,
+resting on a \textit{versioned union-find} that records the equalities common to
+several versions once.
+
+As before, we studied this design formally and empirically. The work formalized
+versioned union-finds and versioned e-graphs and proved them correct, and
+analyzed the amortized time and space complexity of the versioned union-find
+against the cloning of a separate e-graph per branch. We realized the design in
+Veg, a standalone Rust library inspired by egg~\cite{willsey2021egg} and 
+evaluated it against cloning, a variant based on persistent data structures, and
+the state of the art~\cite{singher2024easteregg}, where versioned e-graphs used up to $30\%$ less memory and
+ran up to $4\times$ faster, with the gap widening as the number of explored
+terms and branches grew.
