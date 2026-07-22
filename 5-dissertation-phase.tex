@@ -1,3 +1,8 @@
+In this section, we detail the \textit{dissertation phase} of the proposal, in
+which we pursue the two optimizations that the course-phase semantics make
+possible: \textit{lazy reasoning} and \textit{parallel reasoning}, which converge
+into \system, the deliverable of the proposal.
+
 \subsection{Lazy Reasoning}
 
 With a single structure carrying one equivalence relation per assumption
@@ -15,8 +20,8 @@ so that reasoning under a condition like $a = b \to c = d$ can reuse the relatio
 already computed under $a = b$. Laziness reifies an inherited equality only when queried, amortizing the cost
 over the queries that use it. We can
 evaluate the operations in isolation, against eager counterparts, and end to end
-inside one of the afore-mentioned provers, where case-splitting arise in proofs
-by cases, or SMT solver, where case-splitting paradigms such as 
+inside one of the aforementioned provers, where case splits arise in proofs
+by cases, or an SMT solver, where case-splitting paradigms such as
 cube-and-conquer~\cite{heule2011cube} are a natural workload.
 
 \subsection{Parallel Reasoning}
@@ -41,6 +46,8 @@ parallelization of the same dependency graph.
 
 \subsection{Smart E-Graphs}
 
-\paragraph{Putting everything together} \dots
-
-\paragraph{Integration with Provers} e.g., Z3 \dots
+\system~is the deliverable of the proposal: a single artifact that packages the
+four extensions, the two semantic ones and the two optimizations, into one
+e-graph library and integrates it with an existing prover, so that the benefits
+carry over to real proof search. The integration of all components will be
+done incrementally during the entirety of the dissertation phase.
