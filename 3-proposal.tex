@@ -13,13 +13,15 @@ e-graph represents: disequality reasoning and conditional reasoning. During the
 \textit{dissertation phase}, we pursue the \textit{optimizations} that these
 semantics make possible: lazy reasoning and parallel reasoning. During the
 development, the two lines converge into one final deliverable,
-\textit{Smart E-Graphs}, which we will integrate into both automated
+\system, which we will integrate into both automated
 and interactive provers to demonstrate the benefits of our work.
 
 \begin{figure}[t]
 \centering
 \definecolor{darkgreen}{HTML}{2A5E32}
 \definecolor{midgreen}{HTML}{377E39}
+\definecolor{darkgray}{HTML}{4A4A4A}
+\definecolor{midgray}{HTML}{7A7A7A}
 
 \begin{tikzpicture}[
   yearline/.style={gray, opacity=0.35, thin, dashed},
@@ -39,10 +41,18 @@ and interactive provers to demonstrate the benefits of our work.
   \node[gray, font=\small\bfseries] at (\x,2.25) {\lab};
 }
 
+% ---- Now Time Axis ----
+{
+\def\x{3.23}; \def\lab{2y};
+\draw[yearline, draw=midgreen] (\x,-2.3) -- (\x,2.0);
+\node[midgreen, font=\small\bfseries] at (\x,2.25) {\lab};
+\node[label, text=midgreen] at (\x,-2.8) {Now};
+}
+
 % ---- Course Phase ----
-\node[outer, minimum width=0.38\linewidth] (g1) at (0,0) {};
-\node[inner, text width=0.15\linewidth] at ($(g1.center)+(0,0.75)$) {Disequality\\Reasoning};
-\node[inner, text width=0.15\linewidth] at ($(g1.center)+(0,-0.75)$) {Conditional\\Reasoning};
+\node[outer, fill=darkgray, minimum width=0.38\linewidth] (g1) at (0,0) {};
+\node[inner, fill=midgray, text width=0.15\linewidth] at ($(g1.center)+(0,0.75)$) {Disequality\\Reasoning};
+\node[inner, fill=midgray, text width=0.15\linewidth] at ($(g1.center)+(0,-0.75)$) {Conditional\\Reasoning};
 \node[label] (g1label) at ($(g1.center)+(0,-2.8)$) {Course Phase};
 
 % ---- Dissertation Phase ----

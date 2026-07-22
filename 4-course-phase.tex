@@ -1,5 +1,32 @@
-\subsection{Survey of related work} literature review \dots
+In this section, we detail the \textit{course phase} of the proposal, during
+which we developed two semantic extensions that enrich the reasoning
+capabilities of classical e-graphs: \textit{disequality reasoning} and 
+\textit{conditional reasoning}.
 
-\subsection{Disequality Reasoning} contribution \dots
+\subsection{Disequality Reasoning}
+First, I contributed to \textit{dis/equality graphs}, which extend
+e-graphs with direct support for disequality~\cite{zakhour2025disequality}.
+Equality is represented as usual, while a disequality is stored as a
+first-class, undirected \textit{disequality edge} between two e-classes. This
+contrasts with the \textit{embedding} techniques prevalent in SMT solvers and
+verifiers, which reify (dis)equality into the term language, using a symbol such
+as \texttt{eq} or \texttt{ne} and saturating it against \texttt{false}.
+Embeddings enlarge the e-graph with extra e-nodes and e-classes, or require
+saturation; a disequality edge only requires storing a pair of e-classes plus
+some ad-hoc bookkeeping without affecting the term space, reducing both time and
+memory overhead.
+
+We studied this design formally and empirically. The work introduced a formal
+framework for reasoning about e-graphs and used it to prove that an e-graph
+coincides with the reflexive, symmetric, transitive, and
+congruent closure of the asserted equalities. Generalizing to dis/equality
+graphs, we proved that they detect any contradiction between the recorded
+equalities and the asserted disequalities, and we gave an analytical bound
+showing them to be asymptotically more efficient than the embeddings.
+We implemented them as an
+extension to egg~\cite{willsey2021egg} and evaluated them in an SMT solver and
+the Propel automated theorem prover~\cite{zakhour2024algebraic, zakhour2023crdt} on
+standard benchmarks, where direct support for disequalities outperformed 
+embedding-based encodings, in line with the analytical result.
 
 \subsection{Conditional Reasoning} authored \dots
