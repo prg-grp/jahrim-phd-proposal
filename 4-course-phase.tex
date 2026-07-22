@@ -47,6 +47,7 @@ analyzed the amortized time and space complexity of the versioned union-find
 against the cloning of a separate e-graph per branch. We realized the design in
 Veg, a standalone Rust library inspired by egg~\cite{willsey2021egg} and 
 evaluated it against cloning, a variant based on persistent data structures, and
-the state of the art~\cite{singher2024easteregg}, where versioned e-graphs used up to $30\%$ less memory and
-ran up to $4\times$ faster, with the gap widening as the number of explored
-terms and branches grew.
+the state of the art~\cite{singher2024easteregg} across two case studies, an EUF
+solver and the TheSy theorem prover~\cite{singher2021thesy}, where versioned
+e-graphs used up to $30\%$ less memory and ran up to $4\times$ faster, with the
+gap widening as the number of explored terms and branches grew.

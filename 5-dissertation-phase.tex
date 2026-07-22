@@ -1,6 +1,23 @@
 \subsection{Lazy Reasoning}
 
-\paragraph{Lazy Operations} e.g., union and intersection of e-graphs \dots
+With a single structure carrying one equivalence relation per assumption
+context, lazy reasoning asks how to exploit the dependencies between these
+contexts to avoid redundant work: the conditions that guard them are logically
+related, so the relation induced by one often determines much of the relation
+induced by another. As these relations form a lattice, two operations arise alongside the \textit{fork} that opens a
+context: a \textit{meet}, the closure of their union, which merges facts from
+different subgoals; and a \textit{join}, their intersection, which keeps the
+facts common to every case of a split. The fork alone, a specific form of
+laziness that in effect clones a relation on demand, is what versioned e-graphs
+already provide; the goal now is to exploit richer dependencies between contexts,
+such as those induced by the semantics of the conditions that separate them, e.g.,
+so that reasoning under a condition like $a = b \to c = d$ can reuse the relation
+already computed under $a = b$. Laziness reifies an inherited equality only when queried, amortizing the cost
+over the queries that use it. We can
+evaluate the operations in isolation, against eager counterparts, and end to end
+inside one of the afore-mentioned provers, where case-splitting arise in proofs
+by cases, or SMT solver, where case-splitting paradigms such as 
+cube-and-conquer~\cite{heule2011cube} are a natural workload.
 
 \subsection{Parallel Reasoning} 
 
