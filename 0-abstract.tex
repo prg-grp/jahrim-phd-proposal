@@ -1,21 +1,23 @@
 Software verification is the discipline of establishing that a program meets its
-specification. Such guarantees are indispensable to improve our understanding of
-software systems and ensure their reliability. Theorem proving
-pursues them by constructing formal machine-checkable proofs of correctness, in
-a logic that can capture program semantics. Many theorem provers rest on a 
-common foundation for equational reasoning. 
+specification and is indispensable to improve our understanding of software 
+systems and ensure their reliability. 
+Theorem proving pursues verification by constructing formal machine-checkable 
+proofs of correctness, in a logic that can capture program semantics.
+Constructing such proofs turns repeatedly on deciding whether terms are equal,
+and many theorem provers rest on a common foundation for equational reasoning.
 Reasoning in verification, however, is rarely about equality alone. 
 Proofs split into cases, argue under assumptions, and appeal to facts that hold 
 only conditionally, but provers today capture this richer semantics around that 
-foundation rather than within it. This proposal argues that such semantics 
-belongs inside the foundation: a foundation with understanding beyond
-equality lets provers do more reasoning at the level they already share. 
+foundation rather than within it. This proposal argues that the foundation
+itself should reason beyond equality, letting provers do more of their work at
+the level they already share.
 
 We pursue this idea for the e-graph, the equality-reasoning data structure at 
 the heart of many 
 provers. Extending it to capture a broader class of relationships between terms
 lets provers reason about them natively and opens room for optimizations,
 since one enriched structure can reuse work that separate encodings would
-repeat. These gains are not tied to any one prover: we consolidate the extensions into
-\system, a single artifact that can integrate with existing provers and, through
-them, reach the verification ecosystem.
+repeat. Because the e-graph underlies so many provers, these gains extend well
+beyond any single tool: we consolidate the extensions into \system, a single
+artifact that integrates with existing provers and, through them, reaches the
+broader verification ecosystem.

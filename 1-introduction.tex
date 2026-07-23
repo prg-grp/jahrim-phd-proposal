@@ -5,11 +5,11 @@ conforms to a given specification. It is a traditional area of research in
 computer science, drawing on both \textit{software engineering} and 
 \textit{programming languages}.
 \textit{Dynamic verification}, such as \textit{testing} \cite{ammann2016testing} and 
-\textit{fuzzing} \cite{miller1990fuzzing}, 
+\textit{fuzzing}~\cite{zeller2024fuzzingbook},
 executes the system under selected configurations to discover deviations from 
 the specification, i.e., \textit{bugs}. 
 Conversely, \textit{static verification}, such as \textit{model checking} \cite{clarke2018modelchecking}
-and \textit{theorem proving} \cite{harrison2009theoremproving}, analyzes all possible behaviors of the
+and \textit{theorem proving}~\cite{harrison2009theoremproving, kroening2016decision}, analyzes all possible behaviors of the
 system
 to guarantee that it always satisfies the specification. Since this is rarely
 feasible for complex systems, static verification often relies on
@@ -20,10 +20,10 @@ analysis is performed without executing the original system.
 % FOCUS: What is theorem proving?
 In this proposal, we focus on \textit{static verification} and specifically on
 \textit{theorem proving} for software verification. A theorem prover is a tool
-that checks the validity of \textit{formulas} in some \textit{logic}~\cite{kroening2016decision}, 
+that checks the validity of \textit{formulas} in some \textit{logic}
 e.g., whether a \textit{goal} property (i.e., some behavior) is implied from
 a set of known facts (i.e., the system). 
-To do so, theorem provers can apply a mix of two approaches: the 
+To do so, theorem provers can apply a mix of two approaches~\cite{kroening2016decision}: the 
 \textit{model-theoretic} approach cleverly enumerates all possible
 models of the facts and checks if the goal holds, i.e., searches for
 the first system configuration that invalidates the expected behavior; the 
@@ -43,15 +43,14 @@ More expressive analyzers, such as the Viper \textit{verification language}~\cit
 check that given \textit{preconditions} are sufficient to guarantee arbitrary
 \textit{postconditions} of a program, based on \textit{separation logic}~\cite{reynolds2002separation} and
 \textit{SMT solvers}~\cite{demoura2008z3}. 
-At the boundary of expressiveness, \textit{proof assistants} like Lean can check
-the proofs of arbitrary properties of the system using \textit{dependent type theory}
-\cite{demoura2021lean4}, but they enforce \textit{totality} of definitions, which is a
+At the boundary of expressiveness, \textit{proof assistants} like Lean \cite{demoura2021lean4} can check
+the proofs of arbitrary properties of the system using \textit{dependent type theory}~\cite{martinlof1984itt, coquand1988constructions}, but they enforce \textit{totality} of definitions, which is a
 necessary condition for the soundness of the proofs.
 Together, these tools provide us with a better understanding of the system
-before it is deployed in the real world, preventing costly failures \cite{lions1996ariane}. 
+before it is deployed in the real world, preventing costly failures~\cite{leveson1993therac, edelman1997fdiv, lions1996ariane, durumeric2014heartbleed, lipp2018meltdown, kocher2019spectre}.
 Their relevance is even more pronounced with the surge in software produced by
 \textit{generative artificial intelligence}, which has fueled a push to certify
-machine-generated artifacts \cite{sun2024clover,yang2023leandojo,song2025leancopilot,thakur2025clever,cook2025autoreasoning,poesia2022synchromesh,nagy2026chopchop,mundler2025typeconstrained}.
+machine-generated artifacts from both academy \cite{sun2024clover,yang2023leandojo,song2025leancopilot,thakur2025clever,poesia2022synchromesh,nagy2026chopchop,mundler2025typeconstrained} and industry \cite{aws2024bedrock, trinh2024alphageometry, polu2022curriculum, lample2022hypertree}.
 
 % LIMITATIONS: What are the challenges in theorem proving?
 Theorem proving faces two fundamental challenges: \textit{scalability} and
@@ -62,14 +61,17 @@ and memory budget. Usability concerns the human cost: expressing a system and
 its specification in a formal logic, and steering the prover toward a proof,
 demands considerable expertise and manual effort. These two challenges are in
 tension, and theorem provers are commonly classified by how they trade one
-against the other, according to their level of automation. \textit{Automated
+against the other, according to their level of automation~\cite{harrison2014history, wiedijk2006seventeen}. \textit{Automated
 theorem provers} (ATPs) require no human guidance and thus minimize the
 usability burden, but their automation reaches only a limited class of goals
 before the search becomes intractable; their central challenge is therefore
 scalability. \textit{Interactive theorem provers} (ITPs) admit human guidance
 and can, in principle, prove arbitrary properties, so expressiveness is not the
 wall; their central challenge is instead the human effort this guidance
-requires, i.e., usability.
+requires, i.e., usability. In practice the two families are not sealed off: ITPs
+increasingly embed automation to ease this burden, through \textit{tactics} that
+discharge routine subgoals and \textit{hammers} that hand goals to automated
+provers~\cite{blanchette2016hammering}.
 
 % INSIGHT: Most verification tools eventually rely on e-graphs. ATPs use it for
 % equational reasoning and ITPs use it for automated proof search.
@@ -107,7 +109,7 @@ be made first-class in the e-graph. A proof by cases splits the goal into multip
 assumptions. Two ingredients are essential to this technique:
 \textit{disequality reasoning}, which tracks disequalities arising from mutually
 exclusive cases, and \textit{conditional reasoning}, which tracks which facts 
-hold under which assumptions. With disequality reasoning, contradictions can be detected early, which can be exploited to prune the search space or in proof by contradiction. With conditional reasoning, the entailment of conditions can be mapped to a dependency relation among e-graphs, which can be exploited for
+hold under which assumptions. With disequality reasoning, contradictions can be detected early, which can be exploited to prune the search space or in proofs by contradiction. With conditional reasoning, the entailment of conditions can be mapped to a dependency relation among e-graphs, which can be exploited for
 \textit{lazy reasoning}, deferring computation until a query demands it, and for
 \textit{parallel reasoning}, scheduling proof exploration across independent
 tasks.
@@ -115,15 +117,13 @@ tasks.
 % IMPACT: An optimized foundation for theorem proving enables more and faster
 % automated proofs, which in turn increase both scalability for ATPs and 
 % usability of ITPs.
-Because these extensions live in the e-graph, the shared substrate of the
-ecosystem, their benefits are not confined to a single tool: any prover built on
-e-graphs stands to prove more, and to prove it faster. These gains fall along the
-two axes that divide the field. For ATPs, detecting contradictions
-early, deferring computation until it is needed, and exploring independent
-branches in parallel all attack the combinatorial blow-up of the search,
-helping with the scalability that most limits them. For ITPs,
+Because these extensions live in the e-graph, the substrate shared across the
+ecosystem, their benefits are not confined to a single tool but reach any prover
+built on it. The gains fall along the two axes that divide the field. For ATPs,
+detecting contradictions early, deferring computation until it is needed, and
+exploring independent branches in parallel all attack the combinatorial blow-up
+of the search, addressing the scalability that most limits them. For ITPs,
 absorbing disequalities and conditional facts into the e-graph lets automation
-discharge goals that would otherwise fall to the user, helping with the usability
-that most limits them. Because the improvement is made once, at the foundation,
-and inherited by every tool above it, its impact compounds as the demand for
-verified software continues to grow.
+discharge goals that would otherwise fall to the user, addressing the usability
+that most limits them. Made once at the foundation, this improvement is
+inherited by every tool above it.
