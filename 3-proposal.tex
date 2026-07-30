@@ -6,16 +6,6 @@ the e-graph and exploit the resulting structure for optimization. Since the
 e-graph is the shared substrate of much of the theorem-proving ecosystem, these
 extensions stand to benefit automated and interactive provers alike.
 
-Figure~\ref{fig:plan} outlines the high-level plan for at most five years of the
-Ph.D., split into two phases. During the \textit{course phase}, in the first two
-years, we develop the two \textit{semantic} extensions that enrich what the
-e-graph represents: disequality reasoning and conditional reasoning. During the
-\textit{dissertation phase}, we pursue the \textit{optimizations} that these
-semantics make possible: lazy reasoning and parallel reasoning. During the
-development, the two lines converge into one final deliverable,
-\system, which we will integrate into both automated
-and interactive provers to demonstrate the benefits of our work.
-
 \begin{figure}[h]
 \centering
 \definecolor{darkgreen}{HTML}{2A5E32}
@@ -43,7 +33,7 @@ and interactive provers to demonstrate the benefits of our work.
 
 % ---- Now Time Axis ----
 {
-\def\x{3.23}; \def\lab{2y};
+\def\x{3.23}\def\lab{2y}
 \draw[yearline, draw=midgreen] (\x,-2.3) -- (\x,2.0);
 \node[midgreen, font=\small\bfseries] at (\x,2.25) {\lab};
 \node[label, text=midgreen] at (\x,-2.8) {Now};
@@ -61,9 +51,19 @@ and interactive provers to demonstrate the benefits of our work.
 \node[inner, text width=0.15\linewidth] at ($(g2.center)+(-1.6,-0.75)$) {Parallel\\Reasoning};
 \node[chevron, fill=midgreen, text width=0.10\linewidth, minimum height=2.8cm]
      (tp) at ($(g2.center)+(2.3,0)$) {};
-\node[align=center, text=white] at ([xshift=2mm]tp.center) {Smart\\E-Graphs};
+\node[align=center, text=white] at ([xshift=2mm]tp.center) {\systemstacked};
 \node[label] (g2label) at ($(g2.center)+(0,-2.8)$) {Dissertation Phase};
 \end{tikzpicture}
 \caption{High-level plan for the Ph.D. proposal.}
 \label{fig:plan}
 \end{figure}
+
+Figure~\ref{fig:plan} outlines the high-level plan for at most five years of the
+Ph.D., split into two phases. During the \textit{course phase}, in the first two
+years, we developed the two \textit{semantic} extensions that enrich what the
+e-graph represents: disequality reasoning and conditional reasoning. During the
+\textit{dissertation phase}, we pursue the \textit{optimizations} that these
+semantics make possible: lazy reasoning and parallel reasoning. During the
+development, the two lines converge into one final deliverable,
+\system, which we will integrate into both automated
+and interactive provers to demonstrate the benefits of our work.

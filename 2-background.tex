@@ -85,3 +85,16 @@ underlies applications from compiler optimization~\cite{tate2009eqsat} to
 inductive theorem proving, as in TheSy~\cite{singher2021thesy} and
 CCLemma~\cite{kurashige2024cclemma}, while the same e-matching mechanism drives
 quantifier instantiation in SMT solvers~\cite{demoura2007ematching}.
+
+\paragraph{E-Graph Extensions.} E-graphs have already been extended in several 
+directions. Contextual variants carry several congruent equivalence relations at 
+once, embedded in the language as 
+\textit{assume nodes}~\cite{coward2024constraint} or in the
+structure as \textit{colors} in Easter Egg~\cite{singher2024easteregg}.
+Parallelism has been studied beneath the e-graph, in concurrent
+union-finds~\cite{jayanti2016concurrent}, and around it, where equality
+saturation has been parallelized with thread-safe structures and deferred,
+batched updates~\cite{vandercruysse2026parallel}. This proposal takes
+the structural route to e-graph extensions, which leaves the term space 
+untouched, and pursues parallelism as the exploration of many relations under
+different assumptions rather than the saturation of a single one.

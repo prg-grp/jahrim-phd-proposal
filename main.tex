@@ -23,6 +23,11 @@
 \usepackage{amsfonts}
 \usepackage[backend=biber]{biblatex}
 \addbibresource{bibliography.bib}
+% Allow long URLs in the bibliography to break across lines.
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+% Last-resort stretch for lines with no good break point (long titles, URLs).
+\setlength{\emergencystretch}{1em}
 \usepackage{graphicx}
 \usepackage[toc,page]{appendix}
 \usepackage{geometry}
@@ -38,9 +43,7 @@
 \usetikzlibrary{shapes.symbols,calc}
 \usepackage{ctable}
 \usepackage{url}
-\usepackage{lipsum}
 \usepackage{titling}
-
 
 \author{Jahrim Gabriele Cesario}
 \title{Semantic-Aware Foundations\\for Theorem Proving}
@@ -59,10 +62,11 @@
     urlbordercolor=cyan     % color of external links
 }
 
-\newcommand{\placeholder}[1]{{\color{gray}{\textbf{Placeholder}:~#1}}}
-\newcommand{\revise}[1]{{\color{red}{#1}}}
-\newcommand{\system}{\textit{Smart E-Graphs}}
-
+% \system takes an optional font command (default: italic). The line-broken
+% variant is separate: a \\ must stay outside the font group to remain a line
+% break inside a TikZ node.
+\NewDocumentCommand{\system}{O{\textit}}{#1{Smart E-Graphs}}
+\newcommand{\systemstacked}{Smart\\E-Graphs}
 
 \begin{document}
 \begin{titlepage}
@@ -111,12 +115,12 @@
 \begin{minipage}{0.5\textwidth}
 \begin{flushright} \large
 \emph{Advisor:} \\
-Guido \textsc{Salvaneschi} \\
+Prof. Dr. Guido \textsc{Salvaneschi} \\
 Institute of Computer Science\\
 University of St.Gallen\\[0.5cm]
 \emph{Co-Advisor(s):} \\
-Max \textsc{Willsey}\\
-Faculty of Electrical Engineering and Computer Sciences\\
+Prof. Dr. Max \textsc{Willsey}\\
+Department of Electrical Engineering and Computer Sciences\\
 University of California, Berkeley
 %\emph{Other Supervisors} \\
 % \textsc{Add name here} % Supervisor's Name
