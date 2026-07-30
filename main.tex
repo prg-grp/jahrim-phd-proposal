@@ -46,14 +46,17 @@
 \usepackage{titling}
 
 \author{Jahrim Gabriele Cesario}
-\title{Semantic-Aware Foundations\texorpdfstring{\\}{ }for Theorem Proving}
+% \title carries the line break for the title page; PDF metadata needs a plain
+% single-line string, since \thetitle reaches \pdftitle already expanded.
+\newcommand{\titleplain}{Semantic-Aware Foundations for Theorem Proving}
+\title{Semantic-Aware Foundations\\for Theorem Proving}
 
 
 \hypersetup{
     unicode=false,          % non-Latin characters in Acrobat’s bookmarks
     pdffitwindow=true,      % window fit to page when opened
     pdfstartview={FitH},    % fits the width of the page to the window
-    pdftitle={\thetitle},   % title
+    pdftitle={\titleplain}, % title
     pdfauthor={\theauthor}, % author
     colorlinks=false,       % false: boxed links; true: colored links
     linkbordercolor=red,    % color of internal links (change box color with linkbordercolor)
