@@ -51,8 +51,12 @@ in Section~\ref{sec:lazy}.
 
 \subsection{Smart E-Graphs}
 
-\system~is the deliverable of the proposal: a single artifact that packages the
-four extensions, the two semantic ones and the two optimizations, into one
-e-graph library and integrates it with an existing prover, so that the benefits
-carry over to real proof search. The integration of all components will be
-done incrementally during the entirety of the dissertation phase.
+\system~is the deliverable of the proposal: one e-graph library with all four
+proposed extensions. A host prover can adopt it in place of its own structure
+and enable only the extensions it needs, so that our artifact can reach
+the verification ecosystem rather than one tool. Our extensions can interact in
+subtle ways, so their composition is non-trivial. For example,
+disequalities should be interpreted per version and be preserved by the
+meet and join. We will develop \system\ incrementally, validating it against the
+benchmarks above in the provers our prior work already targets, and release the
+artifact open source.
