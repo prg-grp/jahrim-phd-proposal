@@ -1,23 +1,23 @@
 In this section, we detail the \textit{dissertation phase} of the proposal, in
 which we pursue the two optimizations that the course-phase semantics make
-possible: \textit{lazy reasoning} and \textit{parallel reasoning}, which converge
-into \system, the deliverable of the proposal.
+possible: \textit{lazy reasoning} and \textit{parallel reasoning}, which
+converge into the \system\ library, the deliverable of the proposal.
 
-\subsection{Lazy Reasoning}
+\subsection{Laziness}
 \label{sec:lazy}
 
 With a single structure carrying one equivalence relation per assumption
-context, lazy reasoning asks how to exploit the dependencies between these
-contexts to avoid redundant work: the conditions that guard them are logically
-related, so the relation induced by one often determines much of the relation
-induced by another. As these relations form a lattice, two operations arise 
-alongside the \textit{fork} that opens a
+context, \textit{lazy reasoning} asks how to exploit the dependencies between
+these contexts to avoid redundant work. If two equivalence relations are induced
+by logically related conditions, much of one can be derived from the other.
+As these equivalence relations form a lattice, two operations arise alongside the
+\textit{fork} that creates a new
 context: a \textit{meet}, the closure of their union, which merges facts from
 different subgoals; and a \textit{join}, their intersection, which keeps the
 facts common to every case of a split. Versioned e-graphs already provide a fork
 operation, which is a specific form of laziness that in effect clones a relation
 on demand. The goal now is to exploit richer dependencies between contexts,
-such as those induced by the semantics of the conditions that separate them, e.g.,
+such as those induced by the semantics of the conditions that separate them,
 so that reasoning under a condition like $a = b \to c = d$ can reuse the relation
 already computed under $a = b$. Laziness reifies an inherited equality only when
 queried, amortizing the cost over the queries that use it. We can
@@ -29,12 +29,13 @@ we draw on established benchmarks: the suite of the host prover for the former,
 and the SMT-LIB benchmark library~\cite{barrett2016smtlib} for the latter,
 restricted to the divisions where case splitting dominates the search.
 
-\subsection{Parallel Reasoning}
+\subsection{Parallelism}
 
-Parallel reasoning treats the lattice of equivalence relations as a dependency
-graph of tasks, each exploring one relation modulo its dependencies, and asks 
-how to schedule that graph across many workers. Three difficulties shape the 
-problem.
+The lattice of equivalence relations also opens the way to a new parallelization
+strategy: our extension for \textit{parallel reasoning} treats the lattice as a
+dependency graph of tasks, each exploring one relation modulo its dependencies,
+and asks how to schedule that graph across many workers. 
+Three difficulties shape the problem.
 No task is guaranteed to terminate, since saturating a context need not reach a
 fixpoint, so execution must be incremental, each task propagating partial
 results for downstream tasks to build on rather than running to completion. The
@@ -50,14 +51,14 @@ number of threads grows, relative to sequential exploration and to an ideal
 parallelization of the same dependency graph, drawing on the same benchmarks as
 in Section~\ref{sec:lazy}.
 
-\subsection{Smart E-Graphs}
+\subsection{\system[\textbf]\ Library}
 
-\system\ is the deliverable of the proposal: one e-graph library with all four
-proposed extensions. A host prover can adopt it in place of its own structure
-and enable only the extensions it needs, so that our artifact can reach
-the verification ecosystem rather than one tool. Our extensions can interact in
-subtle ways, so their composition is non-trivial. For example,
+The \system\ library is the deliverable of the proposal: a single e-graph
+implementation with all four proposed contributions. A host prover can adopt it in
+place of its own structure and enable only the extensions it needs, so that our
+artifact can reach the verification ecosystem rather than one tool. Our extensions can
+interact in subtle ways, so their composition is not trivial. For example,
 disequalities should be interpreted per version and be preserved by the
-meet and join. We will develop \system\ incrementally, validating it against the
+meet and join. We will develop the \system\ library incrementally, validating it against the
 benchmarks above in the provers our prior work already targets, and release the
 artifact open source.

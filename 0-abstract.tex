@@ -13,11 +13,11 @@ itself should reason beyond equality, letting provers do more of their work at
 the level they already share.
 
 We pursue this idea for the e-graph, the equality-reasoning data structure at 
-the heart of many 
-provers. Extending it to capture a broader class of relationships between terms
-lets provers reason about them natively and opens room for optimizations,
-since one enriched structure can reuse work that separate encodings would
-repeat. Because the e-graph underlies so many provers, these gains extend well
-beyond any single tool: we consolidate the extensions into \system, a single
-artifact that integrates with existing provers and, through them, reaches the
-broader verification ecosystem.
+the heart of many provers. Our project, \system, moves that richer semantics
+inside the e-graph: disequalities and conditional facts become part of the
+structure itself, and provers reason about them natively. These semantic
+extensions open room for optimizations, since one enriched structure can reuse
+work that separate encodings would repeat, and because the e-graph underlies so
+many provers, these gains extend well beyond any single tool. We plan to realize our
+idea in a single artifact that integrates with existing provers and, through
+them, reaches the broader verification ecosystem.

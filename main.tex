@@ -48,6 +48,7 @@
 \author{Jahrim Gabriele Cesario}
 % \title carries the line break for the title page; PDF metadata needs a plain
 % single-line string, since \thetitle reaches \pdftitle already expanded.
+% The title of the proposal is non-binding w.r.t. the dissertation title.
 \newcommand{\titleplain}{Semantic-Aware Foundations for Theorem Proving}
 \title{Semantic-Aware Foundations\\for Theorem Proving}
 
@@ -67,8 +68,10 @@
 
 % \system takes an optional font command (default: italic). The line-broken
 % variant is separate: a \\ must stay outside the font group to remain a line
-% break inside a TikZ node.
+% break inside a TikZ node. \systemsingular names one such structure, as a
+% common noun, which the project name capitalizes.
 \NewDocumentCommand{\system}{O{\textit}}{#1{Smart E-Graphs}}
+\NewDocumentCommand{\systemsingular}{O{\textit}}{#1{smart e-graph}}
 \newcommand{\systemstacked}{Smart\\E-Graphs}
 
 \begin{document}

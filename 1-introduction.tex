@@ -4,11 +4,11 @@
 conforms to a given specification. It is a traditional area of research in 
 computer science, drawing on both \textit{software engineering} and 
 \textit{programming languages}.
-\textit{Dynamic verification}, such as \textit{testing} \cite{ammann2016testing} and 
+\textit{Dynamic verification}, such as \textit{testing}~\cite{ammann2016testing} and 
 \textit{fuzzing}~\cite{zeller2024fuzzingbook},
 executes the system under selected configurations to discover deviations from 
 the specification, i.e., \textit{bugs}. 
-Conversely, \textit{static verification}, such as \textit{model checking} \cite{clarke2018modelchecking}
+Conversely, \textit{static verification}, such as \textit{model checking}~\cite{clarke2018modelchecking}
 and \textit{theorem proving}~\cite{harrison2009theoremproving, kroening2016decision}, analyzes all possible behaviors of the
 system
 to guarantee that it always satisfies the specification. Since this is rarely
@@ -20,9 +20,9 @@ analysis is performed without executing the original system.
 % FOCUS: What is theorem proving?
 In this proposal, we focus on \textit{static verification} and specifically on
 \textit{theorem proving} for software verification. A theorem prover is a tool
-that checks the validity of \textit{formulas} in some \textit{logic}
-e.g., whether a \textit{goal} property (i.e., some behavior) is implied from
-a set of known facts (i.e., the system). 
+that checks the validity of \textit{formulas} in some \textit{logic},
+e.g., whether a \textit{goal} property (i.e., some behavior) is implied by
+a set of known facts (i.e., the system).
 To do so, theorem provers can apply a mix of two approaches~\cite{kroening2016decision}: the 
 \textit{model-theoretic} approach cleverly enumerates all possible
 models of the facts and checks if the goal holds, i.e., searches for
@@ -38,25 +38,26 @@ conditions are \textit{sufficient} or \textit{necessary} for a system to behave
 as expected. 
 For example, a \textit{type system} like Rust's enforces 
 \textit{ownership semantics} in a program, which is a sufficient condition for
-memory safety and data race freedom \cite{jung2018rustbelt}. 
-More expressive analyzers, such as the Viper \textit{verification language}~\cite{mueller2016viper} can
+memory safety and data race freedom~\cite{jung2018rustbelt}. 
+More expressive analyzers, such as the Viper \textit{verification language}~\cite{mueller2016viper}, can
 check that given \textit{preconditions} are sufficient to guarantee arbitrary
 \textit{postconditions} of a program, based on \textit{separation logic}~\cite{reynolds2002separation} and
 \textit{SMT solvers}~\cite{demoura2008z3}. 
-At the boundary of expressiveness, \textit{proof assistants} like Lean \cite{demoura2021lean4} can check
+At the boundary of expressiveness, \textit{proof assistants} like Lean~\cite{demoura2021lean4} can check
 the proofs of arbitrary properties of the system using \textit{dependent type theory}~\cite{martinlof1984itt, coquand1988constructions}, but they enforce \textit{totality} of definitions, which is a
 necessary condition for the soundness of the proofs.
 Together, these tools provide us with a better understanding of the system
 before it is deployed in the real world, preventing costly failures~\cite{leveson1993therac, edelman1997fdiv, lions1996ariane, durumeric2014heartbleed, lipp2018meltdown, kocher2019spectre}.
 Their relevance is even more pronounced with the surge in software produced by
 \textit{generative artificial intelligence}, which has fueled a push to certify
-machine-generated artifacts from both academy \cite{sun2024clover,yang2023leandojo,song2025leancopilot,thakur2025clever,poesia2022synchromesh,nagy2026chopchop,mundler2025typeconstrained} and industry \cite{aws2024bedrock, trinh2024alphageometry, polu2022curriculum, lample2022hypertree}.
+machine-generated artifacts from both academia~\cite{sun2024clover,yang2023leandojo,song2025leancopilot,thakur2025clever,poesia2022synchromesh,nagy2026chopchop,mundler2025typeconstrained} and industry~\cite{aws2024bedrock, trinh2024alphageometry, polu2022curriculum, lample2022hypertree}.
 
 % LIMITATIONS: What are the challenges in theorem proving?
 Theorem proving faces two fundamental challenges: \textit{scalability} and
 \textit{usability}. Scalability concerns the computational cost of the analysis:
-the space of models to enumerate or proofs to derive grows rapidly, and is often
-undecidable, so a prover may fail to establish a goal within any practical time
+the space of models to enumerate or proofs to derive grows rapidly, and the
+underlying problem is often undecidable, so a prover may fail to establish a
+goal within any practical time
 and memory budget. Usability concerns the human cost: expressing a system and
 its specification in a formal logic, and steering the prover toward a proof,
 demands considerable expertise and manual effort. These two challenges are in
@@ -82,12 +83,13 @@ Oppen~\cite{nelson1980congruence}. Both families of provers reduce core
 reasoning tasks to operations on e-graphs (Figure~\ref{fig:pyramid}), though to
 different ends. ATPs use
 them for \textit{equational reasoning}: SMT solvers rely on congruence closure
-and e-matching to combine theories and instantiate quantifiers
-\cite{demoura2007ematching, demoura2008z3}, while \textit{equality-saturation}
+and e-matching to combine theories and instantiate
+quantifiers~\cite{demoura2007ematching, demoura2008z3}, while
+\textit{equality-saturation}
 engines make the e-graph the central representation for applying rewrites
-without committing to an order \cite{tate2009eqsat, willsey2021egg}. ITPs use
-them for \textit{automated proof search}: tactics such as the \texttt{grind}
-tactic in Lean discharge goals by saturating an e-graph with the available facts
+without committing to an order~\cite{tate2009eqsat, willsey2021egg}. ITPs use
+them for \textit{automated proof search}: tactics such as Lean's
+\texttt{grind} discharge goals by saturating an e-graph with the available facts
 and their congruence consequences~\cite{leangrind}. Because the same
 structure sits beneath so many otherwise disconnected tools, an improvement to
 the e-graph itself can propagate as an optimization across the whole ecosystem.
@@ -102,14 +104,15 @@ the e-graph itself can propagate as an optimization across the whole ecosystem.
 % CONTRIBUTION: Extend e-graphs to semantic-reasoning to enable optimizations
 % across the entire theorem proving ecosystem.
 At its core, this proposal extends the e-graph beyond the equalities it was
-designed to represent, enriching it into a structure that reasons about a 
-broader class of relationships between terms. We start from one of the most 
-common patterns in theorem proving, \textit{proof by cases}, and show how it can
+designed to represent, enriching it into a structure that reasons about a
+broader class of relationships between terms: a \systemsingular. We start from
+one of the most common patterns in theorem proving, \textit{proof by cases}, and
+show how it can
 be made first-class in the e-graph. A proof by cases splits the goal into multiple subgoals, proven under mutually exclusive 
 assumptions. Two ingredients are essential to this technique:
 \textit{disequality reasoning}, which tracks disequalities arising from mutually
 exclusive cases, and \textit{conditional reasoning}, which tracks which facts 
-hold under which assumptions. With disequality reasoning, contradictions can be detected early, which can be exploited to prune the search space or in proofs by contradiction. With conditional reasoning, the entailment of conditions can be mapped to a dependency relation among e-graphs, which can be exploited for
+hold under which assumptions. With disequality reasoning, contradictions can be detected early, which can be exploited to prune the search space or to drive proofs by contradiction. With conditional reasoning, the entailment of conditions can be mapped to a dependency relation among e-graphs, which can be exploited for
 \textit{lazy reasoning}, deferring computation until a query demands it, and for
 \textit{parallel reasoning}, scheduling proof exploration across independent
 tasks.
